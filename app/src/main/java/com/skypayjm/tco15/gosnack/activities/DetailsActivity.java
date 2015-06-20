@@ -66,7 +66,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (null != mToolbar) {
             mToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
 
-            mToolbar.setTitle(R.string.title_activity_settings);
+            mToolbar.setTitle(R.string.title_activity_details);
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
