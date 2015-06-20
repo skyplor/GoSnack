@@ -157,8 +157,7 @@ public class DetailsActivity extends AppCompatActivity {
         int finalRadius = Math.max(myView.getWidth(), myView.getHeight()) / 2;
 
         // create the animator for this view (the start radius is zero)
-        Animator anim =
-                ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
+        Animator anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
 
         // make the view visible and start the animation
         myView.setVisibility(View.VISIBLE);

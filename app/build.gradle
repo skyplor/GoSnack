@@ -10,6 +10,8 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        resValue "string", "tray__authority", "${applicationId}.tray"
+        // add this to set a unique tray authority based on your applicationId
     }
     buildTypes {
         release {
@@ -34,5 +36,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:palette-v7:22.2.0'
     compile 'com.github.rey5137:material:1.1.1'
-    compile 'com.firebase:firebase-client-android:2.3.0+'
+    compile 'com.firebase:firebase-client-android:2.3.0'
+    compile 'net.grandcentrix.tray:tray:0.9.2'
+    compile 'com.android.support:support-v4:22.2.0'
 }
