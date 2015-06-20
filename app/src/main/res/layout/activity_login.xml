@@ -13,19 +13,45 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/email"
+        android:layout_above="@+id/fb_login_button"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:text="@string/app_name"
         android:textSize="@dimen/abc_text_size_display_1_material"
         android:textStyle="bold" />
 
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/fb_login_button"
+        android:layout_above="@+id/tw_login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/login_with_facebook" />
+
+    <!--style="@style/RaiseColorButtonRippleStyle"-->
+    <com.rey.material.widget.Button
+        android:id="@+id/tw_login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="30dp"
+        android:layout_margin="4dp"
+        android:background="@drawable/layers_twitter_button_bg"
+        android:text="Log in with Twitter"
+        style="@style/ButtonText"
+        />
+
     <com.rey.material.widget.EditText
         android:id="@+id/email"
         style="@style/Material.Widget.EditText.Light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@+id/tw_login_button"
+        android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
         android:ems="10"
         android:hint="@string/emailHint"
@@ -57,4 +83,11 @@
         android:layout_margin="10dp"
         android:text="REGISTER / LOGIN" />
 
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/snackBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"></android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

@@ -10,4 +10,90 @@
         android:layout_height="match_parent"
         android:text="@string/title_fragment_seller" />
 
+    <GridLayout
+        android:id="@+id/checkboxGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gender"
+        android:layout_centerHorizontal="true"
+        android:columnCount="2">
+
+        <com.rey.material.widget.CheckBox
+            android:id="@+id/nachos"
+            style="@style/Material.Drawable.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Nachos"
+            android:textSize="15sp" />
+
+        <com.rey.material.widget.CheckBox
+            android:id="@+id/hotdogs"
+            style="@style/Material.Drawable.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Hotdogs"
+            android:textSize="15sp" />
+
+        <com.rey.material.widget.CheckBox
+            android:id="@+id/chips"
+            style="@style/Material.Drawable.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Chips"
+            android:textSize="15sp" />
+
+        <com.rey.material.widget.CheckBox
+            android:id="@+id/beer"
+            style="@style/Material.Drawable.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Beer"
+            android:textSize="15sp" />
+
+        <com.rey.material.widget.CheckBox
+            android:id="@+id/peanuts"
+            style="@style/Material.Drawable.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Peanuts"
+            android:textSize="15sp" />
+
+        <com.rey.material.widget.CheckBox
+            android:id="@+id/softdrinks"
+            style="@style/Material.Drawable.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Soft Drinks (Coke, Sprite, Pepsi)"
+            android:textSize="15sp" />
+
+        <com.rey.material.widget.CheckBox
+            android:id="@+id/water"
+            style="@style/Material.Drawable.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Mineral Water"
+            android:textSize="15sp" />
+    </GridLayout>
+
 </FrameLayout>

@@ -2,12 +2,17 @@ package com.skypayjm.tco15.gosnack.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,29 +20,61 @@ import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.melnykov.fab.FloatingActionButton;
 import com.skypayjm.tco15.gosnack.R;
 import com.skypayjm.tco15.gosnack.models.Snack;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
 public class DetailsActivity extends AppCompatActivity {
     public static final String EXTRA_SNACK = "EXTRA_SNACK";
     private Snack mSnack;
     private ImageView ivProfile;
+    private Toolbar mToolbar;
     private TextView tvName;
     private TextView tvPhone;
     private View vPalette;
     private FloatingActionButton fab;
     private View snackBar;
     private Transition.TransitionListener mEnterTransitionListener;
+    private Firebase firebaseRef;
+    /* A dialog that is presented until the Firebase authentication finished. */
+    private ProgressDialog mAuthProgressDialog;
+    /* *************************************
+    *              TWITTER                *
+    ***************************************/
+    public static final int RC_TWITTER_LOGIN = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        // Enable up button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        if (null != mToolbar) {
+            mToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+
+            mToolbar.setTitle(R.string.title_activity_settings);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    exitReveal();
+//                    NavUtils.navigateUpFromSameTask(DetailsActivity.this);
+                }
+            });
+        }
         ivProfile = (ImageView) findViewById(R.id.ivProfile);
         tvName = (TextView) findViewById(R.id.tvName);
         tvPhone = (TextView) findViewById(R.id.tvPhone);
@@ -45,23 +82,55 @@ public class DetailsActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         snackBar = findViewById(R.id.snackBar);
 
+        firebaseRef = new Firebase(getResources().getString(R.string.firebase_url));
         fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String uri = "tel:" + mSnack.getNumber();
-//                Intent intent = new Intent(Intent.ACTION_DIAL);
-//                intent.setData(Uri.parse(uri));
-//                startActivity(intent);
-                Snackbar.make(snackBar, uri, Snackbar.LENGTH_LONG).show();
-            }
-        });
+                                   @Override
+                                   public void onClick(View v) {
+                                       String uri = mSnack.getNumber();
+                                       Snackbar.make(snackBar, uri, Snackbar.LENGTH_LONG).show();
+                                       if (loggedIntoTwitter()) {
+                                           new AsyncTask<Void, Void, Void>() {
+
+                                               @Override
+                                               protected Void doInBackground(Void... params) {
+                                                   publishTweet();
+                                                   return null;
+                                               }
+
+                                           }.execute();
+                                       } else {
+                                           // Do processing after authentication failure
+                                           loginWithTwitter();
+                                       }
+                                       // Check if already logged into Twitter.
+//                if (loggedIntoTwitter()) {
+//                    // If yes, proceed to show user the window to publish the tweet
+//                    publishTweet();
+//
+//                } else {
+//                    loginWithTwitter();
+//                }
+                                       // If no, proceed to get user to login.
+                                   }
+                               }
+
+        );
         fab.setVisibility(View.INVISIBLE);
 
         // Extract snack from bundle
-        mSnack = (Snack) getIntent().getExtras().getSerializable(EXTRA_SNACK);
+        mSnack = (Snack)
+
+                getIntent()
+
+                        .
+
+                                getExtras()
+
+                        .
+
+                                getSerializable(EXTRA_SNACK);
 
         // Fill views with data
-//        Picasso.with(DetailsActivity.this).load(mSnack.getThumbnailDrawable()).into(ivProfile);
         tvName.setText(mSnack.getName());
         tvPhone.setText(mSnack.getNumber());
         //Define Listener for image loading
@@ -104,8 +173,17 @@ public class DetailsActivity extends AppCompatActivity {
             }
         };
         ivProfile.setTag(target);
-        Picasso.with(this).load(mSnack.getThumbnailDrawable()).into(target);
-        mEnterTransitionListener = new Transition.TransitionListener() {
+        Picasso.with(this).
+
+                load(mSnack.getThumbnailDrawable()
+
+                ).
+
+                into(target);
+
+        mEnterTransitionListener = new Transition.TransitionListener()
+
+        {
             @Override
             public void onTransitionStart(Transition transition) {
 
@@ -130,8 +208,53 @@ public class DetailsActivity extends AppCompatActivity {
             public void onTransitionResume(Transition transition) {
 
             }
-        };
-        getWindow().getEnterTransition().addListener(mEnterTransitionListener);
+        }
+
+        ;
+
+        getWindow()
+
+                .
+
+                        getEnterTransition()
+
+                .
+
+                        addListener(mEnterTransitionListener);
+        /* Setup the progress dialog that is displayed later when authenticating with Firebase */
+        mAuthProgressDialog = new
+
+                ProgressDialog(this);
+
+        mAuthProgressDialog.setTitle("Loading");
+        mAuthProgressDialog.setMessage("Authenticating with Firebase...");
+        mAuthProgressDialog.setCancelable(false);
+    }
+
+    private void publishTweet() {
+        Snackbar.make(findViewById(R.id.snackBar), "Publishing tweet", Snackbar.LENGTH_LONG).show();
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey(getResources().getString(R.string.twitter_consumer_key))
+                .setOAuthConsumerSecret(getResources().getString(R.string.twitter_consumer_secret))
+                .setOAuthAccessToken(getResources().getString(R.string.twitter_access_token))
+                .setOAuthAccessTokenSecret(getResources().getString(R.string.twitter_access_token_secret));
+        try {
+            TwitterFactory factory = new TwitterFactory(cb.build());
+            Twitter twitter = factory.getInstance();
+
+            String latestStatus = "@Stadium, snacking on awesome food #vendor. All the way #Team !!";
+            Status status = twitter.updateStatus(latestStatus);
+            Snackbar.make(findViewById(R.id.snackBar), "Tweet successfully", Snackbar.LENGTH_LONG);
+        } catch (TwitterException te) {
+            te.printStackTrace();
+        }
+    }
+
+    private boolean loggedIntoTwitter() {
+        AuthData authData = firebaseRef.getAuth();
+        return authData.getProvider().equals("twitter");
     }
 
     @Override
@@ -218,5 +341,74 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         exitReveal();
+    }
+
+    /* ************************************
+     *               TWITTER              *
+     **************************************
+     */
+    private void loginWithTwitter() {
+        startActivityForResult(new Intent(this, TwitterOAuthActivity.class), RC_TWITTER_LOGIN);
+    }
+
+    /**
+     * This method will attempt to authenticate a user to firebase given an oauth_token (and other
+     * necessary parameters depending on the provider)
+     */
+    private void authWithFirebase(final String provider, Map<String, String> options) {
+        if (options.containsKey("error")) {
+            showErrorDialog(options.get("error"));
+        } else {
+            mAuthProgressDialog.show();
+            if (provider.equals("twitter")) {
+                // if the provider is twitter, we pust pass in additional options, so use the options endpoint
+                firebaseRef.authWithOAuthToken(provider, options, new Firebase.AuthResultHandler() {
+
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        mAuthProgressDialog.dismiss();
+                        new AsyncTask<Void, Void, Void>() {
+
+                            protected Void doInBackground(Void... args) {
+                                publishTweet();
+                                return null;
+                            }
+
+                        }.execute();
+//                        publishTweet();
+                    }
+
+                    @Override
+                    public void onAuthenticationError(FirebaseError firebaseError) {
+                        mAuthProgressDialog.dismiss();
+                        showErrorDialog(firebaseError.toString());
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Show errors to users
+     */
+    private void showErrorDialog(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle("Error")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Map<String, String> options = new HashMap<String, String>();
+        if (requestCode == RC_TWITTER_LOGIN) {
+            options.put("oauth_token", data.getStringExtra("oauth_token"));
+            options.put("oauth_token_secret", data.getStringExtra("oauth_token_secret"));
+            options.put("user_id", data.getStringExtra("user_id"));
+            authWithFirebase("twitter", options);
+        }
     }
 }

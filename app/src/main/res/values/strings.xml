@@ -3,8 +3,8 @@
     <string name="title_activity_details">GoSnack</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_userType">User Type</string>
-    <string name="title_fragment_buyer">What do you sell?</string>
-    <string name="title_fragment_seller">Find the vendor</string>
+    <string name="title_fragment_buyer">Find the vendor</string>
+    <string name="title_fragment_seller">What do you sell?</string>
     <string name="action_settings">Settings</string>
     <string name="emailHint">Email</string>
     <string name="passwordHint">Password</string>
@@ -15,6 +15,7 @@
     <string name="nav_item_buyer_get_locations">Find the snack vendor</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="firebase_url">https://gosnack.firebaseio.com</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels_seller">
@@ -28,9 +29,21 @@
         <item>@string/nav_item_settings</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="login_with_twitter">Login with Twitter</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+
+    <style name="ButtonText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
 </resources>

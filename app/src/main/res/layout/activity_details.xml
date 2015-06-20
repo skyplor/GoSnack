@@ -3,10 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
     <ImageView
         android:id="@+id/ivProfile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/contact_detail_image_height"
+        android:layout_below="@+id/toolbar"
         android:scaleType="centerCrop"
         android:transitionName="profile" />
 
@@ -61,8 +67,9 @@
             android:elevation="@dimen/fab_elevation"
             android:padding="0dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_call"
-            fab:fab_shadow="true" />
+            android:src="@drawable/ic_tweet"
+            fab:fab_shadow="true"
+            fab:rippleColor="#FFFFFF"/>
     </FrameLayout>
 
     <android.support.design.widget.CoordinatorLayout

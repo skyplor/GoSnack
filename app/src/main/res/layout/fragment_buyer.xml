@@ -10,4 +10,10 @@
         android:layout_height="match_parent"
         android:text="@string/title_fragment_buyer" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/vendor_map"
+        android:scaleType="centerCrop" />
+
 </FrameLayout>
